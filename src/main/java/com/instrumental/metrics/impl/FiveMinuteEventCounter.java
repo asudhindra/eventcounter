@@ -4,8 +4,6 @@ import com.instrumental.metrics.counter.EventCounter;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * Implements a frequency counter with a fixed, default window size of five minutes. Event occurring five minutes after
@@ -72,15 +70,6 @@ public final class FiveMinuteEventCounter implements EventCounter {
         int slotsSize = windowSizeInMinutes * 60;
 
         int result = 0;
-        //A complete slot array scan was easier to write with a stream than using the for loop.
-        /*if(numberOfSecondsToExamine == slotsSize) {
-            result += Stream.of(secondSlots)
-                .filter(Objects::nonNull)
-                .mapToInt(event -> event.getCount())
-                .sum();
-            return result;
-        }*/
-
         //Having determined the number of seconds to be counted, compute the indices to be read from the slot array.
         for(int i = 0; i < numberOfSecondsToExamine; i++) {
             int index = (secondSlotIndex - i + slotsSize) % slotsSize;
