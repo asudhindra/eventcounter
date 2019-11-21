@@ -1,6 +1,7 @@
 package com.instrumental.metrics.counter;
 
 import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Simple counter that allows collection of occurrences of a certain event. Implementations of this interface will allow
@@ -12,7 +13,7 @@ public interface EventCounter {
      * Records the occurrence of a single event on the counter. The time at which the event occurred is recorded
      * internally, so the client only needs to record the occurrence of the event being recorded.
      */
-    void incrementEventCount();
+    void incrementEventCount(Instant eventInstant);
 
   /**
    * Retrieves the frequency of the event being recorded over a user specified amount of time,
