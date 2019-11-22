@@ -78,7 +78,7 @@ public class FiveMinuteEventCounterTest {
         assertEquals(3, fiveMinuteCounter.getEventCount(Duration.ofMinutes(1)));
     }
 
-    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void fullSlotCountCheck() throws Exception {
         Instant startTimestamp = Instant.now();
@@ -86,18 +86,20 @@ public class FiveMinuteEventCounterTest {
 
         for(int i = 0; i < 300; i++) {
             fiveMinuteCounter.incrementEventCount(startTimestamp.plusSeconds(i));
-            Thread.sleep(1000); //Move to next slot (second).
         }
+        //Not sure what was the issue here but the for loop based sleep simply did not work on occasion.
+        Thread.sleep(5 * 60 * 1000);
         //Should be 298 or 299 based on the timestamp when the count() API is invoked.
         int result = fiveMinuteCounter.getEventCount(Duration.ofMinutes(5));
         System.out.println("5 minute count: " + result);
         assertTrue(result >= 298 && result <= 300 );
         //Should be 4 or 3 based on the timestamp when the count() API is invoked.
         result = fiveMinuteCounter.getEventCount(Duration.ofSeconds(5));
+        System.out.println("5 second count: " + result);
         assertTrue(result >= 3 && result <= 5);
     }
 
-    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void almostFullSlotCountCheck() throws Exception {
         Instant startTimestamp = Instant.now();
@@ -126,7 +128,7 @@ public class FiveMinuteEventCounterTest {
         assertEquals(10, fiveMinuteCounter.getEventCount(Duration.ofSeconds(11)));
     }
 
-    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void bulkInsertCountCheck() throws Exception {
         Instant startInstant = Instant.now();
