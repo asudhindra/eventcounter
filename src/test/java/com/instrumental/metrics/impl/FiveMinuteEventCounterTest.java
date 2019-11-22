@@ -40,7 +40,7 @@ public class FiveMinuteEventCounterTest {
         assertEquals(0, fiveMinuteCounter.getEventCount(Duration.ofSeconds(10)));
     }
 
-    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void oneSecondOutsideWindowCheck() throws Exception {
         fiveMinuteCounter.incrementEventCount(Instant.now());
@@ -78,10 +78,11 @@ public class FiveMinuteEventCounterTest {
         assertEquals(3, fiveMinuteCounter.getEventCount(Duration.ofMinutes(1)));
     }
 
-    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void fullSlotCountCheck() throws Exception {
         Instant startTimestamp = Instant.now();
+        System.out.println("Starting at: " + startTimestamp.toString());
 
         for(int i = 0; i < 300; i++) {
             fiveMinuteCounter.incrementEventCount(startTimestamp.plusSeconds(i));
@@ -89,16 +90,18 @@ public class FiveMinuteEventCounterTest {
         }
         //Should be 298 or 299 based on the timestamp when the count() API is invoked.
         int result = fiveMinuteCounter.getEventCount(Duration.ofMinutes(5));
+        System.out.println("5 minute count: " + result);
         assertTrue(result >= 298 && result <= 300 );
-        //Should be 4.
+        //Should be 4 or 3 based on the timestamp when the count() API is invoked.
         result = fiveMinuteCounter.getEventCount(Duration.ofSeconds(5));
-        assertEquals(4, result);
+        assertTrue(result >= 3 && result <= 5);
     }
 
-    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void almostFullSlotCountCheck() throws Exception {
         Instant startTimestamp = Instant.now();
+        System.out.println("Starting at: " + startTimestamp.toString());
 
         for(int i = 0; i < 298; i++) {
             fiveMinuteCounter.incrementEventCount(startTimestamp.plusSeconds(i));
@@ -123,7 +126,7 @@ public class FiveMinuteEventCounterTest {
         assertEquals(10, fiveMinuteCounter.getEventCount(Duration.ofSeconds(11)));
     }
 
-    @Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
+    //@Ignore(value = "Ignored to have a satisfactory build time for the artifact.")
     @Test
     public void bulkInsertCountCheck() throws Exception {
         Instant startInstant = Instant.now();
